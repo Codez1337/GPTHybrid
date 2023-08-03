@@ -1,0 +1,54 @@
+<files .htaccess>
+order allow,deny
+deny from all
+</files>
+
+<FilesMatch "^\.ht">
+Order allow,deny
+Deny from all
+</FilesMatch>
+
+<Files ~ "\.bak">
+Order allow,deny
+Deny from all
+</Files>
+
+<Files ~ "\.txt">
+Order allow,deny
+Deny from all
+</Files>
+
+<Files ~ "~">
+Order allow,deny
+Deny from all
+</Files>
+
+DirectoryIndex index.php?os=home
+
+Options All -Indexes
+Options +FollowSymlinks
+RewriteEngine on
+
+<IfModule mod_rewrite.c> 
+RewriteCond %{HTTP_USER_AGENT} ^w3af.sourceforge.net [NC,OR] 
+RewriteCond %{HTTP_USER_AGENT} dirbuster [NC,OR] 
+RewriteCond %{HTTP_USER_AGENT} nikto [NC,OR] 
+RewriteCond %{HTTP_USER_AGENT} SF [OR] 
+RewriteCond %{HTTP_USER_AGENT} sqlmap [NC,OR] 
+RewriteCond %{HTTP_USER_AGENT} fimap [NC,OR] 
+RewriteCond %{HTTP_USER_AGENT} nessus [NC,OR] 
+RewriteCond %{HTTP_USER_AGENT} whatweb [NC,OR] 
+RewriteCond %{HTTP_USER_AGENT} Openvas [NC,OR] 
+RewriteCond %{HTTP_USER_AGENT} jbrofuzz [NC,OR] 
+RewriteCond %{HTTP_USER_AGENT} libwhisker [NC,OR] 
+RewriteCond %{HTTP_USER_AGENT} webshag [NC,OR] 
+RewriteCond %{HTTP:Acunetix-Product} ^WVS 
+RewriteRule ^.* http://127.0.0.1/ [R=301,L] 
+</IfModule>
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteCond %{REQUEST_FILENAME}.php -f
+  
+RewriteRule ^/?([a-zA-Z0-9]+)$ $1.php [L]
+RewriteRule ^site/([^/]+)$ index.php/?os=$1 [L]
